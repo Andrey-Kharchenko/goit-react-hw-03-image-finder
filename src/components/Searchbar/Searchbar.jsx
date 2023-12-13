@@ -12,7 +12,7 @@ export class Searchbar extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.handleInput(this.setState.value);
+    this.props.handleInput(this.state.value);
     this.setState({ value: '' });
   };
 
@@ -39,3 +39,5 @@ export class Searchbar extends Component {
     );
   }
 }
+
+
