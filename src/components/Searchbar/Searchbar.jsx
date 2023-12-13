@@ -1,20 +1,20 @@
 import { Component } from 'react';
-import styles from './Searchbar.module.css'
+import styles from './Searchbar.module.css';
 
 export class Searchbar extends Component {
   state = {
     value: '',
-    };
-    
-    handleChange = ({ target: { value } }) => {
-        this.setState({ value });
-    }
+  };
 
-    handleSubmit = (e) => {
-        e.preventDefault()
-        this.props.handleInput(this.setState.value)
-        this.setState({value:''})
-    }
+  handleChange = ({ target: { value } }) => {
+    this.setState({ value });
+  };
+
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.handleInput(this.setState.value);
+    this.setState({ value: '' });
+  };
 
   render() {
     return (

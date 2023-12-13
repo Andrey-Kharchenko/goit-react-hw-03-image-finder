@@ -67,15 +67,10 @@ export class App extends Component {
         {isLoading ? (
           <Loader />
         ) : (
-            <ImageGallery
-              showModal={this.showModal}
-              gallery={gallery} />
+          <ImageGallery showModal={this.showModal} gallery={gallery} />
         )}
         {isShowModal && (
-          <Modal
-            closeModal={this.closeModal}
-            img={modalShow}>
-            </Modal>
+          <Modal closeModal={this.closeModal} img={modalShow}></Modal>
         )}
         {loadMore && <Button onClick={this.handleLoadMore} />}
       </div>

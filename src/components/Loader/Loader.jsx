@@ -5,7 +5,7 @@ export const Loader = () => {
       <>
         <MoonLoader
           color="#3f51b5"
-          
+          loading size={80}
         />
       </>
     );
