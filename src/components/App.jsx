@@ -18,27 +18,46 @@ export class App extends Component {
     gallery: [],
   };
 
-  handleInput = async searchText => {
-    this.setState({ searchText });
+  async componentDidUpdate(_, prevState) {
+    const { searchText, page } = this.state;
 
-    this.setState({
-      isLoading: true,
-      loadMore: true,
-    });
-
-    const newGallery = await getImage(searchText, 1);
-    if (newGallery.length > 0) {
+    if (prevState.searchText !== searchText) {
       this.setState({
-        gallery: newGallery,
+        isLoading: true,
+        loadMore: false,
+        gallery: [],
+        page: 1,
+      });
+
+      const newGallery = await getImage(searchText, 1);
+
+      if (newGallery.length > 0) {
+        this.setState({
+          gallery: newGallery,
+          isLoading: false,
+          loadMore: newGallery.length >= 12,
+        });
+      } else {
+        this.setState({
+          isLoading: false,
+          loadMore: false,
+        });
+      }
+    }
+
+    if (prevState.page !== page) {
+      const newGallery = await getImage(searchText, page);
+
+      this.setState(prevState => ({
+        gallery: [...prevState.gallery, ...newGallery],
         isLoading: false,
         loadMore: newGallery.length >= 12,
-      });
-    } else {
-      this.setState({
-        isLoading: false,
-        loadMore: false,
-      });
+      }));
     }
+  }
+
+  handleInput = async searchText => {
+    this.setState({ searchText });
   };
 
   showModal = modalShow => {
@@ -50,22 +69,10 @@ export class App extends Component {
     this.setState({ isShowModal: false });
   };
 
-  showButton = () => {
-    this.setState({ loadMore: true });
-  };
-
-  handleLoadMore = async () => {
-    const { page, searchText, gallery } = this.state;
-    this.setState({ isLoading: true });
-    console.log(gallery);
-
-    await getImage(searchText, page + 1).then(newGallery => {
-      this.setState(prevState => ({
-        gallery: [...prevState.gallery, ...newGallery],
-        page: prevState.page + 1,
-        isLoading: false,
-      }));
-    });
+  handleLoadMore = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
   };
 
   render() {
