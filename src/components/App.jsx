@@ -26,10 +26,19 @@ export class App extends Component {
       loadMore: true,
     });
 
-    await getImage(searchText).then(gallery =>
-      this.setState({ gallery: gallery })
-    );
-    this.setState({ isLoading: false });
+    const newGallery = await getImage(searchText, 1);
+    if (newGallery.length > 0) {
+      this.setState({
+        gallery: newGallery,
+        isLoading: false,
+        loadMore: newGallery.length >= 12,
+      });
+    } else {
+      this.setState({
+        isLoading: false,
+        loadMore: false,
+      });
+    }
   };
 
   showModal = modalShow => {
